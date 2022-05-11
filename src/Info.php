@@ -488,8 +488,8 @@ if ( ! class_exists( 'Info' ) ) {
      */
     public function assets( $hook ) {
       if ( in_array( $hook, array( 'themes.php', 'appearance_page_' . $this->page_slug ), true ) ) {
-        wp_enqueue_style( "{$this->theme_slug}-info", get_template_directory_uri() . '/framework/lib/info/css/info.css', array(), '1.0.0' );
-        wp_enqueue_script( "{$this->theme_slug}-info", get_template_directory_uri() . '/framework/lib/info/js/info.js', array(), '1.0.0', true );
+        wp_enqueue_style( "{$this->theme_slug}-info", get_template_directory_uri() . '/vendor/themevan/theme-info/assets/css/info.css', array(), $this->version );
+        wp_enqueue_script( "{$this->theme_slug}-info", get_template_directory_uri() . '/vendor/themevan/theme-info/assets/js/info.js', array(), $this->version, true );
       }
     }
 
@@ -499,7 +499,8 @@ if ( ! class_exists( 'Info' ) ) {
      * @since 1.0.0
      */
     public function display_admin_notice() {
-      $screen_id      = null;
+      $screen_id = null;
+
       $current_screen = get_current_screen();
 
       if ( $current_screen ) {
