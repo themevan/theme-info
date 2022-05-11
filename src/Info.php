@@ -116,17 +116,19 @@ if ( ! class_exists( 'Info' ) ) {
       $this->theme_version = $theme->get( 'Version' );
       $this->theme_slug    = $theme->get_template();
       /* translators: 1: theme name. */
-      $this->menu_name = isset( $this->config['menu_name'] ) ? $this->config['menu_name'] : sprintf( esc_html__( '%s Info', 'medias' ), $this->theme_name );
+      $this->menu_name = isset( $this->config['menu_name'] ) ? $this->config['menu_name'] : sprintf( esc_html__( '%s Info', 'theme-info' ), $this->theme_name );
       /* translators: 1: theme name. */
-      $this->page_name = isset( $this->config['page_name'] ) ? $this->config['page_name'] : sprintf( esc_html__( '%s Info', 'medias' ), $this->theme_name );
+      $this->page_name = isset( $this->config['page_name'] ) ? $this->config['page_name'] : sprintf( esc_html__( '%s Info', 'theme-info' ), $this->theme_name );
       $this->tabs      = isset( $this->config['tabs'] ) ? $this->config['tabs'] : array();
       $this->page_slug = $this->theme_slug . '-info';
       $this->page_url  = admin_url( 'themes.php?page=' . $this->page_slug );
+      $this->notice_pages = array();
+
       /* translators: 1: theme name. */
-      $this->notice = '<p>' . sprintf( esc_html__( 'Welcome! Thank you for choosing %1$s. To fully take advantage of the best our theme can offer please make sure you visit theme info page.', 'medias' ), esc_html( $this->theme_name ) ) . '</p>'
+      $this->notice = '<p>' . sprintf( esc_html__( 'Welcome! Thank you for choosing %1$s. To fully take advantage of the best our theme can offer please make sure you visit theme info page.', 'theme-info' ), esc_html( $this->theme_name ) ) . '</p>'
         .
         /* translators: 1: get started link. */
-        '<p><a href="' . esc_url( $this->page_url ) . '" class="button button-primary">' . sprintf( esc_html__( 'Get started with %1$s', 'medias' ), $this->theme_name ) . '</a><a href="#" class="btn-dismiss" data-userid="' . esc_attr( get_current_user_id() ) . '" data-nonce="' . esc_attr( wp_create_nonce( 'medias_dismiss_nonce' ) ) . '">' . esc_html__( 'Dismiss this notice', 'medias' ) . '</a></p>';
+        '<p><a href="' . esc_url( $this->page_url ) . '" class="button button-primary">' . sprintf( esc_html__( 'Get started with %1$s', 'theme-info' ), $this->theme_name ) . '</a><a href="#" class="btn-dismiss" data-userid="' . esc_attr( get_current_user_id() ) . '" data-nonce="' . esc_attr( wp_create_nonce( "{$this->theme_slug}_dismiss_nonce" ) ) . '">' . esc_html__( 'Dismiss this notice', 'theme-info' ) . '</a></p>';
     }
 
     /**
@@ -181,7 +183,7 @@ if ( ! class_exists( 'Info' ) ) {
      */
     public function hooks() {
       // Register menu.
-      add_action( 'admin_menu', array( $this, 'register_info_page' ) );
+      add_action( 'admin_menu', array( $this, 'register_page' ) );
 
       // Admin notice.
       add_action( 'admin_notices', array( $this, 'admin_notice' ) );
@@ -199,7 +201,7 @@ if ( ! class_exists( 'Info' ) ) {
      *
      * @since 1.0.0
      */
-    public function register_info_page() {
+    public function register_page() {
       // Add info page.
       add_theme_page( $this->menu_name, $this->page_name, 'activate_plugins', $this->page_slug, array( $this, 'render_page' ) );
     }
@@ -272,7 +274,7 @@ if ( ! class_exists( 'Info' ) ) {
         $this->{$method}();
       } else {
         /* translators: 1: method name. */
-        printf( esc_html__( '%1$s() method does not exist.', 'medias' ), $method ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        printf( esc_html__( '%1$s() method does not exist.', 'theme-info' ), $method ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
       }
     }
 
@@ -380,7 +382,7 @@ if ( ! class_exists( 'Info' ) ) {
         <?php endif; ?>
 
         <?php if ( true !== $tgmpa_complete ) : ?>
-          <a href="<?php echo esc_url( $tgmpa_url ); ?>" class="button button-primary"><?php esc_html_e( 'Manage Plugins', 'medias' ); ?></a>
+          <a href="<?php echo esc_url( $tgmpa_url ); ?>" class="button button-primary"><?php esc_html_e( 'Manage Plugins', 'theme-info' ); ?></a>
         <?php endif; ?>
 
         <?php if ( ! empty( $plugins ) ) : ?>
@@ -420,7 +422,7 @@ if ( ! class_exists( 'Info' ) ) {
             $tgmpa_complete = $tgmpa->is_tgmpa_complete();
             if ( true !== $tgmpa_complete ) {
               ?>
-              <a href="<?php echo esc_url( $tgmpa_url ); ?>" class="button button-primary"><?php esc_html_e( 'Manage Plugins', 'medias' ); ?></a>
+              <a href="<?php echo esc_url( $tgmpa_url ); ?>" class="button button-primary"><?php esc_html_e( 'Manage Plugins', 'theme-info' ); ?></a>
               <?php
             }
           }
@@ -571,7 +573,7 @@ if ( ! class_exists( 'Info' ) ) {
       $userid  = ( isset( $_GET['userid'] ) ) ? esc_attr( wp_unslash( $_GET['userid'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
       $wpnonce = ( isset( $_GET['_wpnonce'] ) ) ? esc_attr( wp_unslash( $_GET['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-      if ( false === wp_verify_nonce( $wpnonce, 'medias_dismiss_nonce' ) ) {
+      if ( false === wp_verify_nonce( $wpnonce, "{$this->theme_slug}_dismiss_nonce" ) ) {
         wp_send_json( $output );
       }
 

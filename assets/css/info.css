@@ -1,0 +1,59 @@
+.about-wrap [class$="-col"] .col + .col {
+  margin-left: 0;
+}
+
+.tmv-info-wrap .three-col .col {
+  float: left;
+  width: 30.33%;
+  padding: 15px;
+}
+
+.tmv-info-wrap .tmv-section .dashicons {
+  margin-top: -4px;
+  vertical-align: middle;
+}
+
+.tmv-info-wrap .nav-tab {
+  font-size: 16px;
+}
+
+.tmv-info-wrap h1 {
+  font-size: 2em;
+}
+
+.tmv-info-wrap h3 {
+  font-size: 1.2em;
+}
+
+.tmv-info-wrap .tmv-section-useful-plugins,
+.tmv-info-wrap .tmv-section-upgrade-to-pro,
+.tmv-info-wrap .tmv-section-demo-content {
+  margin-top: 50px;
+}
+
+.tmv-info-wrap .tab-upgrade-to-pro {
+  background-color: #bf2424;
+  background-color: #159614;
+  color: #FFF;
+}
+
+.tmv-info-wrap .wp-badge {
+  background-image: url('../images/logo.png');
+  background-color: #FFF;
+  background-size: 110px auto;
+  background-position: center;
+  height: 70px;
+}
+
+.tmv-info-wrap .quick-links a {
+  margin-right: 5px;
+}
+
+.tmv-info-notice .btn-dismiss {
+  margin-left: 20px;
+}
+
+.tmv-info-wrap .plugin-list {
+  list-style-position: inside;
+  list-style-type: disc;
+}
