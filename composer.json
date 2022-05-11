@@ -1,0 +1,26 @@
+{
+  "name"        : "themevan/theme-info",
+  "description" : "Theme info",
+  "keywords"    : [ "theme" ],
+  "homepage"    : "https://github.com/themevan/theme-info",
+  "license"     : "MIT",
+  "authors"     : [
+    {
+      "name"     : "Nilambar Sharma",
+      "email"    : "nilambar@outlook.com",
+      "homepage" : "https://www.nilambar.net",
+      "role"     : "Developer"
+    }
+  ],
+  "support"     : {
+    "issues" : "https://github.com/themevan/theme-info/issues"
+  },
+  "autoload"    : {
+    "psr-4": {
+      "Nilambar\\NepaliDate\\": "src/"
+    }
+  },
+  "require"     : {
+    "php" : ">=5.6"
+  }
+}
