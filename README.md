@@ -1,2 +1,3 @@
-# theme-info
-Theme info 
+# Theme info 
+
+Create theme info page.
