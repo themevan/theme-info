@@ -231,34 +231,39 @@ if ( ! class_exists( 'Info' ) ) {
 		 * @since 1.0.0
 		 */
 		public function render_page() {
-			?>
-	  <div class="wrap ti-info-wrap">
-		<h1><?php echo esc_html( $this->theme_name ); ?> - <?php echo esc_html( $this->theme_version ); ?></h1>
-			<?php if ( isset( $this->config['welcome_content'] ) && ! empty( $this->config['welcome_content'] ) ) : ?>
-		  <p class="welcome-message"><?php echo esc_html( $this->config['welcome_content'] ); ?></p>
-		<?php endif; ?>
+			echo '<div class="wrap ti-info-wrap">';
 
-			<?php if ( isset( $this->config['badge_image_url'] ) && ! empty( $this->config['badge_image_url'] ) ) : ?>
-				<?php if ( $this->badge_url ) : ?>
-			<a href="<?php echo esc_url( $this->badge_url ); ?>" target="_blank">
-		  <?php endif; ?>
+			echo '<h1>' . esc_html( $this->theme_name ) . ' - ' . esc_html( $this->theme_version ) . '</h1>';
 
-			<div class="ti-badge">
-			  <img src="<?php echo esc_url( $this->config['badge_image_url'] ); ?>" alt="" />
-			</div><!-- .ti-badge -->
+			if ( isset( $this->config['welcome_content'] ) && ! empty( $this->config['welcome_content'] ) ) {
+				echo '<p class="welcome-message">' . esc_html( $this->config['welcome_content'] ) . '</p>';
+			}
 
-				<?php if ( $this->badge_url ) : ?>
-			</a>
-		  <?php endif; ?>
-		<?php endif; ?>
+			if ( isset( $this->config['badge_image_url'] ) && ! empty( $this->config['badge_image_url'] ) ) {
 
-			<?php $this->render_quick_links(); ?>
+				if ( $this->badge_url ) {
+					echo '<a href="' . esc_url( $this->badge_url ) . '" target="_blank">';
+				}
 
-			<?php $this->render_tabs(); ?>
+				echo '<div class="ti-badge">';
+				echo '<img src="' . esc_url( $this->config['badge_image_url'] ) . '" />';
+				echo '</div><!-- .ti-badge -->';
 
-			<?php $this->render_current_tab_content(); ?>
-	  </div><!-- .wrap .ti-info-wrap -->
-			<?php
+				if ( $this->badge_url ) {
+					echo '</a>';
+				}
+			}
+
+			// Render quick links.
+			$this->render_quick_links();
+
+			// Render tab navigation.
+			$this->render_tabs();
+
+			// Render tab content.
+			$this->render_current_tab_content();
+
+			echo '</div><!-- .wrap .ti-info-wrap -->';
 		}
 
 		/**
@@ -395,23 +400,25 @@ if ( ! class_exists( 'Info' ) ) {
 		 * @param array $item Item details.
 		 */
 		private function render_grid_item( $item ) {
-			?>
-	  <div class="item">
-			<?php if ( isset( $item['title'] ) && ! empty( $item['title'] ) ) : ?>
-		  <h3>
-				<?php if ( isset( $item['icon'] ) && ! empty( $item['icon'] ) ) : ?>
-			  <span class="<?php echo esc_attr( $item['icon'] ); ?>"></span>
-			<?php endif; ?>
-				<?php echo esc_html( $this->filter_content( $item['title'] ) ); ?>
-		  </h3>
-		<?php endif; ?>
+			echo '<div class="item">';
 
-			<?php if ( isset( $item['description'] ) && ! empty( $item['description'] ) ) : ?>
-		  <p><?php echo wp_kses_post( $this->filter_content( $item['description'] ) ); ?></p>
-		<?php endif; ?>
+			if ( isset( $item['title'] ) && ! empty( $item['title'] ) ) {
+				echo '<h3>';
 
-			<?php if ( isset( $item['button_text'] ) && ! empty( $item['button_text'] ) && isset( $item['button_url'] ) && ! empty( $item['button_url'] ) ) : ?>
-				<?php
+				if ( isset( $item['icon'] ) && ! empty( $item['icon'] ) ) {
+					echo '<span class="' . esc_attr( $item['icon'] ) . '"></span>';
+				}
+
+				echo esc_html( $this->filter_content( $item['title'] ) );
+
+				echo '</h3>';
+			}
+
+			if ( isset( $item['description'] ) && ! empty( $item['description'] ) ) {
+				echo '<p>' . wp_kses_post( $this->filter_content( $item['description'] ) ) . '</p>';
+			}
+
+			if ( isset( $item['button_text'] ) && ! empty( $item['button_text'] ) && isset( $item['button_url'] ) && ! empty( $item['button_url'] ) ) {
 				$button_target = ( isset( $item['is_new_tab'] ) && ( true === $item['is_new_tab'] || '1' === $item['is_new_tab'] ) ) ? '_blank' : '_self';
 				$button_class  = '';
 				if ( isset( $item['button_type'] ) && ! empty( $item['button_type'] ) ) {
@@ -421,11 +428,11 @@ if ( ! class_exists( 'Info' ) ) {
 						$button_class = 'button button-secondary';
 					}
 				}
-				?>
-		  <a href="<?php echo esc_url( $this->filter_content( $item['button_url'] ) ); ?>" class="<?php echo esc_attr( $button_class ); ?>" target="<?php echo esc_attr( $button_target ); ?>"><?php echo esc_html( $this->filter_content( $item['button_text'] ) ); ?></a>
-		<?php endif; ?>
-	  </div><!-- .col -->
-			<?php
+
+				echo '<a href="' . esc_url( $this->filter_content( $item['button_url'] ) ) . '" class="' . esc_attr( $button_class ) . '" target="' . esc_attr( $button_target ) . '">' . esc_html( $this->filter_content( $item['button_text'] ) ) . '</a>';
+			}
+
+			echo '</div><!-- .item -->';
 		}
 
 		/**
@@ -461,88 +468,92 @@ if ( ! class_exists( 'Info' ) ) {
 			ob_start();
       // @codingStandardsIgnoreStart
 			?>
-	  .ti-grid {
-	  display: grid;
-	  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-	  grid-gap: 2rem;
-	  }
+				.ti-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+				grid-gap: 2rem;
+				}
 
-	  .ti-grid + .ti-grid {
-	  margin-top: 2rem;
-	  }
+				.ti-grid + .ti-grid {
+				margin-top: 2rem;
+				}
 
-	  .ti-info-wrap {
-	  margin: 25px 40px 0 20px;
-	  max-width: 1050px;
-	  font-size: 15px;
-	  position: relative;
-	  }
+				.ti-info-wrap {
+				margin: 25px 40px 0 20px;
+				max-width: 1050px;
+				font-size: 15px;
+				position: relative;
+				}
 
-	  .ti-info-wrap h1 {
-	  font-size: 30px;
-	  }
+				.ti-info-wrap h1 {
+				font-size: 30px;
+				}
 
-	  .ti-info-wrap .welcome-message {
-	  font-size: 19px;
-	  line-height: 1.6;
-	  margin-top: 1.4em;
-	  margin: 1em 200px 1em 0;
-	  }
+				.ti-info-wrap .welcome-message {
+				font-size: 19px;
+				line-height: 1.6;
+				margin-top: 1.4em;
+				margin: 1em 200px 1em 0;
+				}
 
-	  .ti-info-wrap .ti-badge {
-	  position: absolute;
-	  width: 140px;
-	  height: 140px;
-	  top: 0;
-	  right: 0;
-	  background-color: #FFF;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  }
+				.ti-info-wrap .ti-badge {
+				position: absolute;
+				width: 140px;
+				height: 140px;
+				top: 0;
+				right: 0;
+				background-color: #FFF;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				}
 
-	  .ti-info-wrap .ti-badge img {
-	  max-width: 80%;
-	  height: auto;
-	  }
+				.ti-info-wrap .ti-badge img {
+				max-width: 80%;
+				height: auto;
+				}
 
-	  .ti-info-wrap .quick-links {
-	  margin-bottom: 20px;
-	  }
+				.ti-info-wrap .quick-links {
+				margin-bottom: 20px;
+				}
 
-	  .ti-info-wrap .quick-links a {
-	  margin-right: 10px;
-	  }
+				.ti-info-wrap .quick-links a {
+				margin-right: 10px;
+				}
 
-	  .ti-info-wrap .nav-tab {
-	  font-size: 16px;
-	  line-height: 1.3;
-	  padding-left: 15px;
-	  padding-right: 15px;
-	  padding-top: 8px;
-	  padding-bottom: 8px;
-	  }
+				.ti-info-wrap .nav-tab {
+				font-size: 16px;
+				line-height: 1.3;
+				padding-left: 15px;
+				padding-right: 15px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+				}
 
-	  .ti-info-wrap .feature-section h3 {
-	  font-size: 18px;
-	  }
+				.ti-info-wrap .feature-section h3 {
+				font-size: 18px;
+				}
 
-	  .ti-info-wrap .feature-section p {
-	  font-size: 16px;
-	  }
+				.ti-info-wrap .feature-section p {
+				font-size: 16px;
+				}
 
-	  .ti-section {
-	  margin: 15px 0;
-	  }
+				.ti-info-wrap .ti-section {
+				margin: 15px 0;
+				}
 
-	  .ti-section p {
-	  font-size: 15px;
-	  }
+				.ti-info-wrap .ti-section p {
+				font-size: 15px;
+				}
 
-	  .ti-render-mode-tgmpa .plugin-list {
-	  list-style-type: disc;
-	  list-style-position: inside;
-	  }
+				.ti-info-wrap .ti-render-mode-grid h3 span {
+				margin-right: 5px;
+				}
+
+				.ti-info-wrap .ti-render-mode-tgmpa .plugin-list {
+				list-style-type: disc;
+				list-style-position: inside;
+				}
 			<?php
       // @codingStandardsIgnoreEnd
 			return ob_get_clean();
